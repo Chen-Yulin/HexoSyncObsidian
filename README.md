@@ -6,7 +6,7 @@ git clone git@github.com:Chen-Yulin/HexoSyncObsidian.git
 ```
 
 ## Configuraion
-Change the directory in `sync.py`
+Change the directory in `sync_[research/cyl].py`
 ```
 obsidian_path = os.path.expanduser('~')+'/OneDrive/Common/obsidian/CYL Planet/'
 hexo_path = os.path.expanduser('~')+'/Hexo/source/_obsidian/'
@@ -27,12 +27,16 @@ If your obsidian notes include these tags, this script will automatically add th
 ## Usage
 ```
 cd Hexo
-python /HexoSyncObsidian/sync.py
+python3 ./SyncObsidian/clear_obs.py
+python3 ./SyncObsidian/sync_cyl.py
+python3 ./SyncObsidian/sync_research.py
 ```
-or use a script to automate the process of sync obsidian and deploying
+or use a script to automate the process of sync obsidian and deploying hexo site
 ```
-#!/bin/sh 
-python3 ./SyncObsidian/sync.py
+#!/bin/sh
+python3 ./SyncObsidian/clear_obs.py
+python3 ./SyncObsidian/sync_cyl.py
+python3 ./SyncObsidian/sync_research.py
 hexo cl
 hexo g
 hexo d

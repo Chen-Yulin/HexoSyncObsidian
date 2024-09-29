@@ -19,7 +19,8 @@ def replace_image_syntax(file_path):
         content = file.read()
 
     # 使用正则表达式替换 ![[Pasted image xxxx.png]] 为 ![](Pasted image xxxx.png)
-    updated_content = re.sub(r'!\[\[(Pasted image \d{14}\.png)\]\]', r'![](\1)', content)
+    updated_content = re.sub(r'!\[\[(.*?\.png)\]\]', r'![](\1)', content)
+    updated_content = re.sub(r'!\[\[(.*?\.jpg)\]\]', r'![](\1)', updated_content)
     updated_content = re.sub(r'!\[\]\((.+?)\)', lambda match: f"![]({match.group(1).replace(' ', '_')})", updated_content)
 
     # 将替换后的内容写回文件
@@ -114,28 +115,6 @@ def copy_imgs(src_dir, dst_dir):
                 # 重命名文件
                 os.rename(old_file_path, new_file_path)
 
-
-
-
-def clear_obs_content(dir):
-    # 检查目标目录是否存在
-    if not os.path.exists(dir):
-        print(f"目录 {dir} 不存在。")
-        return
-
-    # 遍历目录下的所有文件和文件夹
-    for item in os.listdir(dir):
-        item_path = os.path.join(dir, item)
-
-        # 检查是否以 [OBS] 开头
-        if item.startswith("[OBS]"):
-            if os.path.isdir(item_path):
-                shutil.rmtree(item_path)  # 删除文件夹及其内容
-                print(f"文件夹 {item_path} 已删除。")
-            elif os.path.isfile(item_path):
-                os.remove(item_path)  # 删除文件
-                print(f"文件 {item_path} 已删除。")
-
 def migrate_files(src_dir, dst_dir, prefix = "[OBS]"):
     for entry in os.scandir(src_dir):
         src_path = os.path.join(src_dir, entry.name)
@@ -152,5 +131,4 @@ def migrate_files(src_dir, dst_dir, prefix = "[OBS]"):
 if os.path.exists(hexo_path):
     shutil.rmtree(hexo_path)
 updated = copy_files(obsidian_path, hexo_path)
-clear_obs_content(post_path)
 migrate_files(hexo_path, post_path)
